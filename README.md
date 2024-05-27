@@ -10,4 +10,4 @@ Celotna predstavitev arhitekture in infrastrukture omrežja Fabric za potrebe vy
 ## Certifikati organizacij za delovanje omrežja Fabric
 Vsi potrebni certifikati in njihovo generiranje je združeno v direktorij `fabric-network/organizations`.
 ## Pametna pogodba za DPL na proizvodni liniji produktov v obratu Proizvodnja2
-Vsa izvorna koda pametne pogodbe v okviru DPL za kolute izdelane v obratu rondelice je združena v `fabric-network/chaincode/alu-ot-kolut-dpp`.
+Vsa izvorna koda pametne pogodbe v okviru DPL za produkte izdelane v obratu proizvodnja 2 je združena v `fabric-network/chaincode/produkt-dpp`.
