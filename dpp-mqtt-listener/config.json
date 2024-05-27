@@ -1,0 +1,10 @@
+{
+  "subscribedTopics": [
+    {
+      "topic": "Podjetje/Produkt/Proizvodnja2/Baza/Data"
+    },
+    {
+      "topic": "Podjetje/Produkt/Proizvodnja2/Zavoj/Data"
+    }
+  ]
+}

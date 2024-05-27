@@ -1,0 +1,44 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "Mqtt": {
+    "ConnectionString": "mqtt_broker",
+    "Port": 1883,
+    "ServerId": "alu-simulator-client"
+  },
+  "NLog": {
+    "internalLogLevel": "Info",
+    "internalLogFile": "ALU-simulator-internal-nlog.log",
+    "extensions": [
+      { "assembly": "NLog.Extensions.Logging" },
+      { "assembly": "NLog.Web.AspNetCore" }
+    ],
+    "targets": {
+      "logFile": {
+        "type": "File",
+        "fileName": "Logs/ALU-simulator-${shortdate}.log",
+        "layout": "${longdate} | ${uppercase:${level}} | ${logger} | ${message} ${exception:format=tostring}"
+      },
+      "logConsole": {
+        "type": "Console",
+        "layout": "${longdate} | ${uppercase:${level}} | ${logger} | ${message} ${exception:format=tostring}"
+      }
+    },
+    "rules": [
+      {
+        "logger": "Microsoft.*",
+        "maxLevel": "Info",
+        "final": true
+      },
+      {
+        "logger": "*",
+        "minLevel": "Info",
+        "writeTo": "logFile"
+      }
+    ]
+  }
+}

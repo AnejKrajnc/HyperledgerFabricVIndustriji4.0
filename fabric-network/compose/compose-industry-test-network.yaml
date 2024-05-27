@@ -1,0 +1,274 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '3.7'
+
+volumes:
+  orderer.dpp.podjetje.si:
+  peer0.proizvodnja2.dpp.podjetje.si:
+  peer1.proizvodnja2.dpp.podjetje.si:
+  peer2.proizvodnja2.dpp.podjetje.si:
+  peer3.proizvodnja2.dpp.podjetje.si:
+  peer4.proizvodnja2.dpp.podjetje.si:
+  peer0.proizvodnja1.dpp.podjetje.si:
+  peer0.warehouses.dpp.podjetje.si:
+  peer0.sellers.dpp.podjetje.si:
+  peer0.nadzor.dpp.podjetje.si:
+
+networks:
+  test:
+    name: fabric_test
+
+name: "dpp_fabric_test_network"
+services:
+  orderer.dpp.podjetje.si:
+    container_name: orderer.dpp.podjetje.si
+    image: hyperledger/fabric-orderer:2.4.9
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_GENERAL_BOOTSTRAPMETHOD=none
+      - ORDERER_CHANNELPARTICIPATION_ENABLED=true
+      - ORDERER_ADMIN_TLS_ENABLED=true
+      - ORDERER_ADMIN_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_ADMIN_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_ADMIN_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7053
+      - ORDERER_OPERATIONS_LISTENADDRESS=orderer.dpp.podjetje.si:9443
+      - ORDERER_METRICS_PROVIDER=prometheus
+    working_dir: /root
+    command: orderer
+    volumes:
+        - ../organizations/ordererOrganizations/dpp.podjetje.si/orderers/orderer.dpp.podjetje.si/msp:/var/hyperledger/orderer/msp
+        - ../organizations/ordererOrganizations/dpp.podjetje.si/orderers/orderer.dpp.podjetje.si/tls/:/var/hyperledger/orderer/tls
+        - orderer.dpp.podjetje.si:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+      - 7053:7053
+      - 9443:9443
+    networks:
+      - test
+
+  peer0.proizvodnja2.dpp.podjetje.si:
+    container_name: peer0.proizvodnja2.dpp.podjetje.si
+    image: hyperledger/fabric-peer:2.4.9
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variables
+      - CORE_PEER_ID=peer0.proizvodnja2.dpp.podjetje.si
+      - CORE_PEER_ADDRESS=peer0.proizvodnja2.dpp.podjetje.si:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.proizvodnja2.dpp.podjetje.si:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.proizvodnja2.dpp.podjetje.si:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.proizvodnja2.dpp.podjetje.si:7051
+      - CORE_PEER_LOCALMSPID=proizvodnja2MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.proizvodnja2.dpp.podjetje.si:9444
+      - CORE_METRICS_PROVIDER=prometheus
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0proizvodnja2"}
+      - CORE_CHAINCODE_EXECUTION_TIMEOUT=300s
+    volumes:
+        - ../organizations/peerOrganizations/proizvodnja2.dpp.podjetje.si/peers/peer0.proizvodnja2.dpp.podjetje.si:/etc/hyperledger/fabric
+        - peer0.proizvodnja2.dpp.podjetje.si:/var/hyperledger/production
+    working_dir: /root
+    command: peer node start
+    ports:
+      - 7051
+      - 9444
+    networks:
+      - test
+
+  peer1.proizvodnja2.dpp.podjetje.si:
+    container_name: peer1.proizvodnja2.dpp.podjetje.si
+    image: hyperledger/fabric-peer:2.4.9
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variables
+      - CORE_PEER_ID=peer1.proizvodnja2.dpp.podjetje.si
+      - CORE_PEER_ADDRESS=peer1.proizvodnja2.dpp.podjetje.si:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.proizvodnja2.dpp.podjetje.si:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.proizvodnja2.dpp.podjetje.si:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.proizvodnja2.dpp.podjetje.si:7051
+      - CORE_PEER_LOCALMSPID=proizvodnja2MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+      - CORE_OPERATIONS_LISTENADDRESS=peer1.proizvodnja2.dpp.podjetje.si:9444
+      - CORE_METRICS_PROVIDER=prometheus
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer1proizvodnja2"}
+      - CORE_CHAINCODE_EXECUTION_TIMEOUT=300s
+    volumes:
+        - ../organizations/peerOrganizations/proizvodnja2.dpp.podjetje.si/peers/peer1.proizvodnja2.dpp.podjetje.si:/etc/hyperledger/fabric
+        - peer1.proizvodnja2.dpp.podjetje.si:/var/hyperledger/production
+    working_dir: /root
+    command: peer node start
+    ports:
+      - 7051
+      - 9444
+    networks:
+      - test
+
+  peer2.proizvodnja2.dpp.podjetje.si:
+    container_name: peer2.proizvodnja2.dpp.podjetje.si
+    image: hyperledger/fabric-peer:2.4.9
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variables
+      - CORE_PEER_ID=peer2.proizvodnja2.dpp.podjetje.si
+      - CORE_PEER_ADDRESS=peer2.proizvodnja2.dpp.podjetje.si:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer2.proizvodnja2.dpp.podjetje.si:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer2.proizvodnja2.dpp.podjetje.si:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.proizvodnja2.dpp.podjetje.si:7051
+      - CORE_PEER_LOCALMSPID=proizvodnja2MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+      - CORE_OPERATIONS_LISTENADDRESS=peer2.proizvodnja2.dpp.podjetje.si:9444
+      - CORE_METRICS_PROVIDER=prometheus
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer2proizvodnja2"}
+      - CORE_CHAINCODE_EXECUTION_TIMEOUT=300s
+    volumes:
+        - ../organizations/peerOrganizations/proizvodnja2.dpp.podjetje.si/peers/peer2.proizvodnja2.dpp.podjetje.si:/etc/hyperledger/fabric
+        - peer2.proizvodnja2.dpp.podjetje.si:/var/hyperledger/production
+    working_dir: /root
+    command: peer node start
+    ports:
+      - 7051
+      - 9444
+    networks:
+      - test
+
+  peer0.proizvodnja1.dpp.podjetje.si:
+    container_name: peer0.proizvodnja1.dpp.podjetje.si
+    image: hyperledger/fabric-peer:2.4.9
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variables
+      - CORE_PEER_ID=peer0.proizvodnja1.dpp.podjetje.si
+      - CORE_PEER_ADDRESS=peer0.proizvodnja1.dpp.podjetje.si:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.proizvodnja1.dpp.podjetje.si:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.proizvodnja1.dpp.podjetje.si:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.proizvodnja1.dpp.podjetje.si:7051
+      - CORE_PEER_LOCALMSPID=proizvodnja1MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp      
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.proizvodnja1.dpp.podjetje.si:9445
+      - CORE_METRICS_PROVIDER=prometheus
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0proizvodnja1"}
+      - CORE_CHAINCODE_EXECUTION_TIMEOUT=300s
+    volumes:
+        - ../organizations/peerOrganizations/proizvodnja1.dpp.podjetje.si/peers/peer0.proizvodnja1.dpp.podjetje.si:/etc/hyperledger/fabric
+        - peer0.proizvodnja1.dpp.podjetje.si:/var/hyperledger/production
+    working_dir: /root
+    command: peer node start
+    ports:
+      - 7051
+      - 9445
+    networks:
+      - test
+
+  peer0.nadzor.dpp.podjetje.si:
+    container_name: peer0.nadzor.dpp.podjetje.si
+    image: hyperledger/fabric-peer:2.4.9
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variables
+      - CORE_PEER_ID=peer0.nadzor.dpp.podjetje.si
+      - CORE_PEER_ADDRESS=peer0.nadzor.dpp.podjetje.si:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.nadzor.dpp.podjetje.si:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.nadzor.dpp.podjetje.si:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.nadzor.dpp.podjetje.si:7051
+      - CORE_PEER_LOCALMSPID=nadzorMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp      
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.nadzor.dpp.podjetje.si:9445
+      - CORE_METRICS_PROVIDER=prometheus
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0nadzor"}
+      - CORE_CHAINCODE_EXECUTION_TIMEOUT=300s
+    volumes:
+        - ../organizations/peerOrganizations/nadzor.dpp.podjetje.si/peers/peer0.nadzor.dpp.podjetje.si:/etc/hyperledger/fabric
+        - peer0.nadzor.dpp.podjetje.si:/var/hyperledger/production
+    working_dir: /root
+    command: peer node start
+    ports:
+      - 7051
+      - 9445
+    networks:
+      - test
+  dpp-api:
+    container_name: api.proizvodnja2.dpp.podjetje.si
+    image: dpp-api
+    depends_on:
+      - peer1.proizvodnja2.dpp.podjetje.si
+    volumes:
+      - $PWD/.env:/.env
+      - ../organizations/peerOrganizations/proizvodnja2.dpp.podjetje.si/users/:/users/
+      - ../organizations/peerOrganizations/proizvodnja2.dpp.podjetje.si/peers/:/peers/
+    ports:
+      - 5000:8000
+    networks:
+      - test

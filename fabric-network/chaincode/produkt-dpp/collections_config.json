@@ -1,0 +1,14 @@
+[
+     {
+        "name": "proizvodnja2MSPPrivateProductionDataCollection",
+        "policy": "OR('proizvodnja2MSP.member')",
+        "requiredPeerCount": 0,
+        "maxPeerCount": 1,
+        "blockToLive":3,
+        "memberOnlyRead": true,
+        "memberOnlyWrite": false,
+        "endorsementPolicy": {
+          "signaturePolicy": "OR('proizvodnja2MSP.member')"
+        }
+      }
+]

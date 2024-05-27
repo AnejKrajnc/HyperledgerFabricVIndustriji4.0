@@ -1,0 +1,23 @@
+{
+  "name": "mq-dpl-creator",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "author": "Anej Krajnc",
+  "license": "MIT",
+  "devDependencies": {
+    "ts": "^0.2.2",
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.10.8",
+    "@hyperledger/fabric-gateway": "^1.5.1",
+    "bullmq": "^5.7.9",
+    "dotenv": "^16.4.5",
+    "env-var": "^7.4.2",
+    "ioredis": "^5.4.1",
+    "winston": "^3.13.0"
+  }
+}

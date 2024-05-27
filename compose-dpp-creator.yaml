@@ -1,0 +1,59 @@
+---
+version: '3'
+services:
+  mqtt_simulator:
+    build:
+      dockerfile: ./Proizvodnja.MQTT_Simulator/Dockerfile
+    container_name: proizvodnja_mqtt_simulator
+    restart: always
+    networks:
+      - mqttnetwork
+      - default
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./proizvodnja_mqtt_simulator_logs/:/app/Logs
+      - ./docker_mqtt_simulator_appsettings.json:/app/appsettings.json
+  dpp-mqtt-listener:
+    image: dpp-mqtt-listener
+    container_name: dpp-mqtt-listener
+    restart: always
+    hostname: dpp-mqtt-listener
+    networks:
+      - default
+      - mqttnetwork
+
+  mq-dpp-creator:
+    image: mq-dpp-creator
+    container_name: mq-dpp-creator
+    restart: always
+    hostname: mq-dpp-creator
+    volumes:
+      - $PWD/mq-dpp-creator/.env:/.env
+      - $PWD/mq-dpp-creator/users/:/users/
+      - $PWD/mq-dpp-creator/peers/:/peers/
+    networks:
+      - default
+      - mqttnetwork
+      - fabricnetwork
+
+  dpp_jobs_queue:
+    image: redis:latest
+    container_name: dpp_jobs
+    restart: always
+    hostname: dpp_jobs
+    environment:
+      - REDIS_PORT=6379
+    ports:
+      - 6379:6379
+    networks:
+      - default
+      - mqttnetwork
+
+networks:
+  mqttnetwork:
+    name: mqtt_broker_default
+    external: true
+  fabricnetwork:
+    name: fabric_test
+    external: true

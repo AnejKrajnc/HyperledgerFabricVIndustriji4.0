@@ -1,0 +1,14 @@
+NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: cacerts/ca-nadzor-dpp-podjetje-si-7054-ca-nadzor.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/ca-nadzor-dpp-podjetje-si-7054-ca-nadzor.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/ca-nadzor-dpp-podjetje-si-7054-ca-nadzor.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/ca-nadzor-dpp-podjetje-si-7054-ca-nadzor.pem
+    OrganizationalUnitIdentifier: orderer

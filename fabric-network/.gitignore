@@ -1,0 +1,9 @@
+scripts/*
+!scripts/*.sh
+
+
+compose/*
+!compose/docker
+!compose/*.yaml
+
+.DS_Store

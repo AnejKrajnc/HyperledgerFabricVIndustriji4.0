@@ -1,0 +1,24 @@
+{
+  "name": "dpl-mqtt-listener",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "author": "Anej Krajnc",
+  "license": "MIT",
+  "dependencies": {
+    "bullmq": "^5.7.9",
+    "dotenv": "^16.4.5",
+    "env-var": "^7.4.2",
+    "ioredis": "^5.4.1",
+    "winston": "^3.13.0"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/mqtt": "^2.5.0",
+    "@types/node": "^20.12.12",
+    "@types/winston": "^2.4.4",
+    "ts": "^0.2.2",
+    "typescript": "^5.4.5"
+  }
+}

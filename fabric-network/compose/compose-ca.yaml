@@ -1,0 +1,133 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '3.7'
+
+networks:
+  test:
+    name: fabric_test
+
+name: "fabric_test_network_ca"
+
+services:
+
+  ca.proizvodnja2.dpp.podjetje.si:
+    image: hyperledger/fabric-ca:1.5.5
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-proizvodnja2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_ADDRESS=ca.proizvodnja2.dpp.podjetje.si
+      - FABRIC_CA_SERVER_PORT=7054
+      - FABRIC_CA_SERVER_CSR_HOSTS=ca.proizvodnja2.dpp.podjetje.si,proizvodnja2.dpp.podjetje.si
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17054
+    ports:
+      - 7054
+      - 17054
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../organizations/fabric-ca/proizvodnja2:/etc/hyperledger/fabric-ca-server
+    container_name: ca.proizvodnja2.dpp.podjetje.si
+    networks:
+      - test
+
+  ca.proizvodnja1.dpp.podjetje.si:
+    image: hyperledger/fabric-ca:1.5.5
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-proizvodnja1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=7054
+      - FABRIC_CA_SERVER_ADDRESS=ca.proizvodnja1.dpp.podjetje.si
+      - FABRIC_CA_SERVER_CSR_HOSTS=ca.proizvodnja1.dpp.podjetje.si,proizvodnja1.dpp.podjetje.si
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17054
+    ports:
+      - 7054
+      - 17054
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../organizations/fabric-ca/proizvodnja1:/etc/hyperledger/fabric-ca-server
+    container_name: ca.proizvodnja1.dpp.podjetje.si
+    networks:
+      - test
+
+  ca.nadzor.dpp.podjetje.si:
+    image: hyperledger/fabric-ca:1.5.5
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-nadzor
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_ADDRESS=ca.nadzor.dpp.podjetje.si
+      - FABRIC_CA_SERVER_CSR_HOSTS=ca.nadzor.dpp.podjetje.si,nadzor.dpp.podjetje.si
+      - FABRIC_CA_SERVER_PORT=7054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17054
+    ports:
+      - 7054
+      - 17054
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../organizations/fabric-ca/nadzor:/etc/hyperledger/fabric-ca-server
+    container_name: ca.nadzor.dpp.podjetje.si
+    networks:
+      - test
+
+  ca.orderer.dpp.podjetje.si:
+    image: hyperledger/fabric-ca:1.5.5
+    labels:
+      service: hyperledger-fabric
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-orderer
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_ADDRESS=ca.orderer.dpp.podjetje.si
+      - FABRIC_CA_SERVER_CSR_HOSTS=ca.orderer.dpp.podjetje.si,orderer.dpp.podjetje.si
+      - FABRIC_CA_SERVER_PORT=9054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:19054
+    ports:
+      - "9054:9054"
+      - "19054:19054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../organizations/fabric-ca/ordererOrg:/etc/hyperledger/fabric-ca-server
+    container_name: ca.orderer.dpp.podjetje.si
+    networks:
+      - test
+  cli:
+    container_name: cli
+    image: fabric-binaries
+    labels:
+      service: hyperledger-fabric
+    tty: true
+    stdin_open: true
+    environment:
+      - PATH=../bin/bin:$PATH
+      # - GOPATH=/opt/gopath
+      # - FABRIC_LOGGING_SPEC=INFO
+      - FABRIC_CFG_PATH=${PWD}/config
+      # - CORE_PEER_TLS_ENABLED=true
+      # - CORE_PEER_LOCALMSPID="proizvodnja2MSP"
+      # - CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/proizvodnja2.dpp.podjetje.si/peers/peer0.proizvodnja2.dpp.podjetje.si/tls/ca.crt
+      # - CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/proizvodnja2.dpp.podjetje.si/users/Admin@proizvodnja2.dpp.podjetje.si/msp
+      # - CORE_PEER_ADDRESS=proizvodnja2.dpp.podjetje.si:7051
+      # - CORE_PEER_ID=cli
+      # - CORE_PEER_TLS_CERT_FILE=${PWD}/organizations/peerOrganizations/mabufacture.izlake.dpp.podjetje.si/peers/peer0.proizvodnja2.dpp.podjetje.si/tls/server.crt
+      # - CORE_PEER_TLS_KEY_FILE=${PWD}/organizations/peerOrganizations/mabufacture.izlake.dpp.podjetje.si/peers/peer0.proizvodnja2.dpp.podjetje.si/tls/server.key
+      #- FABRIC_LOGGING_SPEC=DEBUG
+    working_dir: /usr/local/fabric
+    command: /bin/bash
+    volumes:
+        - ../organizations:/usr/local/fabric/organizations
+        - ../config:/usr/local/fabric/config
+        - ../scripts:/usr/local/fabric/scripts/
+        - ../chaincode:/usr/local/fabric/chaincode
+        - ../channel-artifacts:/usr/local/fabric/channel-artifacts
+    networks:
+      - test
