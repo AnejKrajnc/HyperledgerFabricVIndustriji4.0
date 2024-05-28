@@ -78,10 +78,10 @@ var currentZavojData: ProduktDPP | null = null;
 //const latestDataQueue = new Queue(produktDataQueueName, { connection: redisConnection});
 
 const workerProduktDPP = new Worker(produktDPPQueueName, async (job: any, token: any) => {
-        if (job.name === "OTKolutDPPCreation") {
+        if (job.name === "ProduktDPPCreation") {
             logger.log({
                 level: 'info',
-                message: `Job started for OT Kolut DPP creation with data: ${JSON.stringify(job.data.zavojData as ProduktDPP)}`
+                message: `Job started for Produkt DPP creation with data: ${JSON.stringify(job.data.zavojData as ProduktDPP)}`
             });
 
             currentZavojData = job.data.kolutData as ProduktDPP; // Setting current Kolut in production at OT for incoming manufacture phases
@@ -92,7 +92,7 @@ const workerProduktDPP = new Worker(produktDPPQueueName, async (job: any, token:
             try {
                 // @ts-ignore
                 const gateway = await fabricConnector.connectGateway(vlivniStrojIdentity);
-                const contract = fabricConnector.getContractOnChannel(gateway, channelName, chaincodeName, "ALUOTKolutDPPContract");
+                const contract = fabricConnector.getContractOnChannel(gateway, channelName, chaincodeName, "ProduktDPPContract");
 
                 let submittedTransaction = await contract.submitAsync("CreateProduktDPP", {
                     arguments: [JSON.stringify(job.data.zavojData as ProduktDPP)]
@@ -202,14 +202,14 @@ const workerProduktDPP = new Worker(produktDPPQueueName, async (job: any, token:
 workerProduktDPP.on('completed', async job => {
     logger.log({
         level: 'info',
-        message: `Job with action: ${job.name} and with data: ${job.data} has been completed`
+        message: `Job with action: ${job.name} and with data: ${JSON.stringify(job.data)} has been completed`
     });
 });
 
 workerProduktDPP.on('failed', async job => {
     logger.log({
         level: 'error',
-        message: `Job with action: ${job?.name} and with data: ${job?.data} failed!`
+        message: `Job with action: ${job?.name} and with data: ${JSON.stringify(job?.data)} failed!`
     });
 });
 

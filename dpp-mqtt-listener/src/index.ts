@@ -25,7 +25,7 @@ const logger = createLogger({
     transports: [new transports.Console()]
 });
 
-const otKolutDPPJobsQueue = new Queue(otKolutDPPQueueName, {
+const produktDPPJobsQueue = new Queue(otKolutDPPQueueName, {
     connection: redisConnection
 });
 
@@ -72,7 +72,7 @@ mqttClient.on("message", async (topic, payload, packet) => {
         if (foundSubscribedTopic.topic == "Podjetje/Produkt/Proizvodnja2/Zavoj/Data") {
             var zavojData: ProduktDPP = JSON.parse(payload.toString("utf-8").replace("\\\"", "'"));
             zavojData.DatumZacetkaIzdelave = new Date(); // Since there is no timestamp for available data
-            await otKolutDPPJobsQueue.add('ProduktDPPCreation', {
+            await produktDPPJobsQueue.add('ProduktDPPCreation', {
                 zavojData: zavojData
             });
             logger.log({
@@ -117,7 +117,7 @@ mqttClient.on("message", async (topic, payload, packet) => {
                 PRETOK_ZHS_LIV_STROJ: 368.7,
                 timestamp: new Date()
             };
-            await otKolutDPPJobsQueue.add('ProduktDPPVlivniStrojPhase', {
+            await produktDPPJobsQueue.add('ProduktDPPVlivniStrojPhase', {
                 vlivniStrojParametersMeasurements: datavlivniStroj
             });
             logger.log({

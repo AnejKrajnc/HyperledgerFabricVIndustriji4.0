@@ -1,8 +1,8 @@
-1712642510;{"Nalog":321072324,"Sarza":23916,"Zavoj":38,"Sirina":223,"Debelina":4.400001525878906,"Izmena":4,"Kvaliteta":178,"SifraKolo":2235}
-1712643015;{"Nalog":321072324,"Sarza":23916,"Zavoj":39,"Sirina":223,"Debelina":4.400001525878906,"Izmena":4,"Kvaliteta":178,"SifraKolo":2235}
-1712643530;{"Nalog":321072324,"Sarza":23916,"Zavoj":40,"Sirina":223,"Debelina":4.400001525878906,"Izmena":4,"Kvaliteta":178,"SifraKolo":2235}
-1712812520;{"Nalog":321072355,"Sarza":23939,"Zavoj":25,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167,"SifraKolo":2235}
-1712813071;{"Nalog":321072355,"Sarza":23939,"Zavoj":26,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167,"SifraKolo":2235}
-1712813606;{"Nalog":321072355,"Sarza":23939,"Zavoj":27,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167,"SifraKolo":2235}
-1712814151;{"Nalog":321072355,"Sarza":23939,"Zavoj":28,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167,"SifraKolo":2235}
-1712814696;{"Nalog":321072355,"Sarza":23939,"Zavoj":29,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167,"SifraKolo":2235}
+1712642510;{"Nalog":321072324,"Sarza":23916,"Zavoj":38,"Sirina":223,"Debelina":4.400001525878906,"Izmena":4,"Kvaliteta":178," SifraStroj":2235}
+1712643015;{"Nalog":321072324,"Sarza":23916,"Zavoj":39,"Sirina":223,"Debelina":4.400001525878906,"Izmena":4,"Kvaliteta":178," SifraStroj":2235}
+1712643530;{"Nalog":321072324,"Sarza":23916,"Zavoj":40,"Sirina":223,"Debelina":4.400001525878906,"Izmena":4,"Kvaliteta":178," SifraStroj":2235}
+1712812520;{"Nalog":321072355,"Sarza":23939,"Zavoj":25,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167," SifraStroj":2235}
+1712813071;{"Nalog":321072355,"Sarza":23939,"Zavoj":26,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167," SifraStroj":2235}
+1712813606;{"Nalog":321072355,"Sarza":23939,"Zavoj":27,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167," SifraStroj":2235}
+1712814151;{"Nalog":321072355,"Sarza":23939,"Zavoj":28,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167," SifraStroj":2235}
+1712814696;{"Nalog":321072355,"Sarza":23939,"Zavoj":29,"Sirina":223,"Debelina":5.099999904632568,"Izmena":1,"Kvaliteta":167," SifraStroj":2235}

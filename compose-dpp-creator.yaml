@@ -14,6 +14,9 @@ services:
     volumes:
       - ./proizvodnja_mqtt_simulator_logs/:/app/Logs
       - ./docker_mqtt_simulator_appsettings.json:/app/appsettings.json
+      - ./Proizvodnja.MQTT_Simulator/Proizvodnja2BazaData.txt:/app/Proizvodnja2BazaData.txt
+      - ./Proizvodnja.MQTT_Simulator/Proizvodnja2Data.txt:/app/Proizvodnja2Data.txt
+      - ./Proizvodnja.MQTT_Simulator/Proizvodnja2ZavojData.txt:/app/Proizvodnja2ZavojData.txt
   dpp-mqtt-listener:
     image: dpp-mqtt-listener
     container_name: dpp-mqtt-listener

@@ -6,7 +6,7 @@ Zagon skripte v korenskem direktoriju (Kratek opis postopka opisan v SH datoteki
  ./start.sh
  ```
 ## Infrastruktura Fabric omrežja
-Celotna predstavitev arhitekture in infrastrukture omrežja Fabric za potrebe vypostavitve DPL na proizvodni liniji OT2 v proizvodnem obratu Rondelice je opisana v obliki Docker Compose datoteke v `fabric-network/compose`.
+Celotna predstavitev arhitekture in infrastrukture omrežja Fabric za potrebe vzpostavitve DPL na proizvodni liniji Proizvodnja2 v proizvodnem obratu Produkt je opisana v obliki Docker Compose datoteke v `fabric-network/compose`.
 ## Certifikati organizacij za delovanje omrežja Fabric
 Vsi potrebni certifikati in njihovo generiranje je združeno v direktorij `fabric-network/organizations`.
 ## Pametna pogodba za DPL na proizvodni liniji produktov v obratu Proizvodnja2
